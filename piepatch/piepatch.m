@@ -26,12 +26,14 @@ function h = piepatch(data, x, y, r, varargin)
 %
 %   lblpos: position along radial line where text labels will be centered.
 %           0 is the center of the pie, 1 is the outer edge (labels are
-%           oriented radially).
+%           oriented radially). [0.5]
 %
 %   lbl:    length(data) x 1 cell array of strings, labels for each pie
-%           slice
+%           slice [{'1'; '2'; '3'; ... 'n'}]
 %
-%   axis:   handle of axis to plot to
+%   axis:   handle of axis to plot to [gca]
+%
+%   label:  if true, add text labels [true]
 
 % Copyright 2012 Kelly Kearney
 
@@ -43,6 +45,7 @@ Opt.sum = sum(data);
 Opt.lblpos = 0.5;
 Opt.lbl = cellstr(num2str((1:ndata)'));
 Opt.axis = gca;
+Opt.label = true;
 
 Opt = parsepv(Opt, varargin);
 
@@ -87,10 +90,11 @@ for id = 1:ndata
 
     rot = 180/pi * thetamid;
     
-    if rot > 90 & rot < 270
+    if rot > 90 && rot < 270
         rot = rot + 180;
     end
     
-    h.txt(id) = text(xt, yt, Opt.lbl{id}, 'horiz', 'center', 'rotation', rot, 'parent', Opt.axis);
-   
+    if Opt.label
+        h.txt(id) = text(xt, yt, Opt.lbl{id}, 'horiz', 'center', 'rotation', rot, 'parent', Opt.axis);
+    end
 end
