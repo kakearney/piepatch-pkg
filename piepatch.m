@@ -40,14 +40,15 @@ function h = piepatch(data, x, y, r, varargin)
 data = data(:);
 ndata = length(data);
 
-Opt.npt = 50; % # points used in total circle
-Opt.sum = sum(data);
-Opt.lblpos = 0.5;
-Opt.lbl = cellstr(num2str((1:ndata)'));
-Opt.axis = gca;
-Opt.label = true;
-
-Opt = parsepv(Opt, varargin);
+p = inputParser;
+p.addParameter('npt', 50); % # points used in total circle
+p.addParameter('sum', sum(data));
+p.addParameter('lblpos', 0.5);
+p.addParameter('lbl', cellstr(num2str((1:ndata)')));
+p.addParameter('axis', gca);
+p.addParameter('label', true);
+p.parse(varargin{:});
+Opt = p.Results;
 
 dtheta = 2*pi/Opt.npt;
 
